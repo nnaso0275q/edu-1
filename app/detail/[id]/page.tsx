@@ -15,13 +15,14 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { universities } from "@/lib/data/universities";
+import Link from "next/link";
 
-export default function UniversityDetailPage({
+export default async function UniversityDetailPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const { id } = params;
+  const { id } = await params;
 
   console.log("PARAMS ID", id);
 
@@ -43,20 +44,6 @@ export default function UniversityDetailPage({
               </div>
               <span className="font-semibold text-gray-900">UniSearch</span>
             </div>
-            <nav className="hidden md:flex items-center gap-6 text-sm">
-              <a href="#" className="text-gray-700 hover:text-gray-900">
-                Их сургуулиуд
-              </a>
-              <a href="#" className="text-gray-700 hover:text-gray-900">
-                Мэргэжлүүд
-              </a>
-              <a href="#" className="text-gray-700 hover:text-gray-900">
-                Тэтгэлэгүүд
-              </a>
-              <a href="#" className="text-gray-700 hover:text-gray-900">
-                Зөвлөгөө
-              </a>
-            </nav>
           </div>
           <div className="flex items-center gap-4">
             <div className="relative hidden md:block">
@@ -86,7 +73,8 @@ export default function UniversityDetailPage({
               variant="secondary"
               className="bg-gray-600/50 text-white border-gray-500"
             >
-              #2 Үндэсний их сургуулиууд
+              {/* #2 Үндэсний их сургуулиууд */}
+              {uni.name}
             </Badge>
           </div>
           <div className="flex items-end justify-between">
@@ -189,182 +177,82 @@ export default function UniversityDetailPage({
                 <h2 className="text-2xl font-bold">
                   Мэргэжлүүд & Элсэлтийн оноо
                 </h2>
-                <select className="text-sm border border-gray-200 rounded-md px-3 py-2 bg-white">
-                  <option>Бүх факультетүүд</option>
-                </select>
-              </div>
-
-              <div className="mb-6">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                  <Input
-                    placeholder="Тодорхой мэргэжил хайх (жнь: Компьютерийн шинжлэх ухаан)..."
-                    className="pl-9"
-                  />
-                </div>
               </div>
 
               <div className="space-y-6">
-                {/* Computer Science */}
-                <Card className="p-6">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-lg font-semibold">
-                          Компьютерийн шинжлэх ухаан
-                        </h3>
-                        <Badge className="bg-green-100 text-green-700 text-xs">
-                          Бак.Ш
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-gray-600">
-                        Инженерийн сургууль
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">
-                        Хамгийн бага САТ оноо
-                      </div>
-                      <div className="text-2xl font-bold">1520</div>
-                      <div className="text-xs text-gray-500">/ 1600</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-gray-600">Өрсөлдөөн</span>
-                      <span className="text-sm font-semibold text-red-600">
-                        Маш өндөр
-                      </span>
-                    </div>
-                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-red-500 rounded-full"
-                        style={{ width: "95%" }}
-                      ></div>
-                    </div>
-                  </div>
-                </Card>
+                {uni.majors.map((major, index) => {
+                  const competitionText =
+                    major.competition >= 75
+                      ? "Маш өндөр"
+                      : major.competition >= 65
+                      ? "Өндөр"
+                      : "Дунд";
 
-                {/* Economics */}
-                <Card className="p-6">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-lg font-semibold">Эдийн засаг</h3>
-                        <Badge className="bg-blue-100 text-blue-700 text-xs">
-                          Бак.У
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-gray-600">
-                        Хүмүүнлэг ба шинжлэх ухааны сургууль
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">
-                        Хамгийн бага САТ оноо
-                      </div>
-                      <div className="text-2xl font-bold">1480</div>
-                      <div className="text-xs text-gray-500">/ 1600</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-gray-600">Өрсөлдөөн</span>
-                      <span className="text-sm font-semibold text-orange-600">
-                        Өндөр
-                      </span>
-                    </div>
-                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-orange-500 rounded-full"
-                        style={{ width: "85%" }}
-                      ></div>
-                    </div>
-                  </div>
-                </Card>
+                  const competitionColor =
+                    major.competition >= 75
+                      ? "bg-red-500"
+                      : major.competition >= 65
+                      ? "bg-orange-500"
+                      : "bg-yellow-500";
 
-                {/* Mechanical Engineering */}
-                <Card className="p-6">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-lg font-semibold">
-                          Механик инженерчлэл
-                        </h3>
-                        <Badge className="bg-green-100 text-green-700 text-xs">
-                          Бак.Ш
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-gray-600">
-                        Инженерийн сургууль
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">
-                        Хамгийн бага САТ оноо
-                      </div>
-                      <div className="text-2xl font-bold">1500</div>
-                      <div className="text-xs text-gray-500">/ 1600</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-gray-600">Өрсөлдөөн</span>
-                      <span className="text-sm font-semibold text-orange-600">
-                        Өндөр
-                      </span>
-                    </div>
-                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-orange-500 rounded-full"
-                        style={{ width: "88%" }}
-                      ></div>
-                    </div>
-                  </div>
-                </Card>
+                  return (
+                    <Link 
+                  href="/mergejil"
 
-                {/* Art History */}
-                <Card className="p-6">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-lg font-semibold">Урлагийн түүх</h3>
-                        <Badge className="bg-blue-100 text-blue-700 text-xs">
-                          Бак.У
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-gray-600">
-                        Хүмүүнлэг ба шинжлэх ухааны сургууль
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">
-                        Хамгийн бага САТ оноо
-                      </div>
-                      <div className="text-2xl font-bold">1420</div>
-                      <div className="text-xs text-gray-500">/ 1600</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-gray-600">Өрсөлдөөн</span>
-                      <span className="text-sm font-semibold text-yellow-600">
-                        Дунд зэрэг
-                      </span>
-                    </div>
-                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-yellow-500 rounded-full"
-                        style={{ width: "70%" }}
-                      ></div>
-                    </div>
-                  </div>
-                </Card>
+
+                      // key={index}
+                      // href={`/universities/${
+                      //   uni.id
+                      // }/majors/${encodeURIComponent(major.name)}`}
+                    >
+                        {major.name}
+                      <Card className="p-6 hover:shadow-lg transition cursor-pointer mt-3">
+                        <div className="flex items-start justify-between mb-3">
+                          <div>
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="text-lg font-semibold">
+                                {major.name}
+                              </h3>
+                              <Badge className="bg-green-100 text-green-700 text-xs">
+                                Бакалавр
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-gray-600">
+                              {major.faculty} факультет
+                            </p>
+                          </div>
+
+                          <div className="text-right">
+                            <div className="text-xs text-gray-500 uppercase mb-1">
+                              Хамгийн бага оноо
+                            </div>
+                            <div className="text-2xl font-bold">
+                              {major.minScore}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-sm text-gray-600">
+                              Өрсөлдөөн
+                            </span>
+                            <span className="text-sm font-semibold">
+                              {competitionText}
+                            </span>
+                          </div>
+                          <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full ${competitionColor}`}
+                              style={{ width: `${major.competition}%` }}
+                            />
+                          </div>
+                        </div>
+                      </Card>
+                    </Link>
+                  );
+                })}
               </div>
-
-              <Button variant="outline" className="w-full mt-6 bg-transparent">
-                Бүх 68 мэргэжлийг үзэх
-              </Button>
             </section>
 
             {/* Campus Life */}
