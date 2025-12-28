@@ -23,6 +23,7 @@ type UniversityCardProps = {
   nextCycle: string | null;
 };
 
+
 const getIconForUniversity = (name: string) => {
   if (name.includes("Tech")) return Building2;
   if (name.includes("Liberal Arts")) return Landmark;
@@ -39,22 +40,20 @@ export default function UniversityCard({
   image,
   status,
   minScore,
-  admissionRate,
-  deadline,
-  nextCycle,
+
 }: UniversityCardProps) {
   const router = useRouter();
   const Icon = getIconForUniversity(name);
 
   const handleViewDetails = () => {
-    router.push(`/surguuli/${id}`);
+    router.push(`/detail/${id}`);
   };
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative h-48">
         <img
-          src={image || "/placeholder.svg"}
+          src={image}
           alt={name}
           className="w-full h-full object-cover"
         />
@@ -96,6 +95,9 @@ export default function UniversityCard({
           <span className="font-semibold">{minScore}</span>
         </div>
 
+
+
+
         <Button
           onClick={handleViewDetails}
           variant="outline"
@@ -107,5 +109,4 @@ export default function UniversityCard({
     </Card>
   );
 }
-
 

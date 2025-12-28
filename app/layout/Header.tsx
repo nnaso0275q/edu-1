@@ -1,55 +1,50 @@
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { GraduationCap, Search, User } from "lucide-react";
+import Link from "next/link";
 
 export function Header() {
   return (
-    <header className="border-b border-border/40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 sticky top-0 z-50">
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/70 backdrop-blur-md">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <GraduationCap className="w-5 h-5 text-primary-foreground" />
+          <div className="w-8 h-8 bg-sky-500 rounded-lg flex items-center justify-center">
+            <GraduationCap className="w-5 h-5 text-white" />
           </div>
-          <span className="font-semibold text-lg">UniMatch</span>
+          <span className="font-semibold text-lg text-slate-900">
+            UniMatch
+          </span>
         </Link>
 
+        {/* Nav */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link
-            href="/"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Home
-          </Link>
-          <Link
-            href="/universities"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Universities
-          </Link>
-          <Link
-            href="/simulator"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Simulator
-          </Link>
+          {["Home", "Universities", "Simulator"].map((item) => (
+            <Link
+              key={item}
+              href={`/${item === "Home" ? "" : item.toLowerCase()}`}
+              className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
+            >
+              {item}
+            </Link>
+          ))}
         </nav>
 
+        {/* Profile */}
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" className="md:hidden">
-            <Search className="w-5 h-5" />
-          </Button>
-          <Button
-            variant="outline"
-            className="hidden md:inline-flex bg-transparent gap-2"
-            asChild
-          >
-            <Link href="/profile">
-              <User className="w-4 h-4" />
-              My Profile
-            </Link>
-          </Button>
+                      <div className="relative hidden md:block">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <Input
+                placeholder="Их сургууль хайх..."
+                className="w-64 pl-9 bg-gray-50 border-gray-200"
+              />
+            </div>
+               <Button className="bg-cyan-500 hover:bg-cyan-600 text-white">
+              Нэвтрэх
+            </Button>
         </div>
       </div>
     </header>
+
   );
 }
